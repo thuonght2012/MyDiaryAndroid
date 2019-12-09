@@ -11,12 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@mipmap/ic_launcher_foreground"-->
-<!--            />-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,16 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="28dp"
-        android:background="#ff668c"
-        android:text="Update"
-        android:textColor="#fff" />
+        android:text="Update" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="14dp"
-        android:background="#66ff66"
-        android:text="Back"
-        android:textColor="#fff" />
+        android:text="Back" />
 </LinearLayout>

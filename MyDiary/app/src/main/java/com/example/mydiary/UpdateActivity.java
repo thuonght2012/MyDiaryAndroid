@@ -45,6 +45,12 @@ public class UpdateActivity extends AppCompatActivity {
 
         edtTitle.setText(title);
         edtDate.setText(content);
+        edtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePicker();
+            }
+        });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,5 +99,15 @@ public class UpdateActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+    private void showDatePicker(){
+        DatePickerDialog date = new DatePickerDialog(this , new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                @SuppressLint("WrongViewCast") EditText editDate = findViewById(R.id.dateUpdate);
+                editDate.setText(i+" "+(i1+1)+" "+i2);
+            }
+        }, 2019, 01, 01);
+        date.show();
     }
 }
