@@ -56,11 +56,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     listener.onDeleteClicked(getAdapterPosition());
                 }
             });
+            btnUpdate = itemView.findViewById(R.id.btnUpdate);
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClickItemUpdate(getAdapterPosition());
+                }
+            });
         }
 
     }
 
+
     interface OnItemListener {
         void onDeleteClicked(int position);
+        void onClickItemUpdate(int position);
     }
 }

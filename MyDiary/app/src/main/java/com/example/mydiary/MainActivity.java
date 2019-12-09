@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
             public void onDeleteClicked(int position) {
                 deleteItem(position);
             }
+
+            @Override
+            public void onClickItemUpdate(int position) {
+                openUpdateDiaryScreen(adapter.taskList.get(position));
+            }
         };
         rvTask.setAdapter(adapter);
     }
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("content", task.getDate());
         startActivity(intent);
     }
+
 
 
 

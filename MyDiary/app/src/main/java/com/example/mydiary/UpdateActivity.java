@@ -14,52 +14,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class UpdateActivity extends AppCompatActivity {
 
     TaskDatabase db;
-    EditText editTitle;
-    EditText editDate;
+    EditText edtTitle;
+    EditText edtDate;
     Button btnUpdate;
-    int taskId;
-
+    int id_item;
+    Button btncancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = Room.databaseBuilder(getApplicationContext(),
-                TaskDatabase.class, "database-name").build();
-
-        editTitle = findViewById(R.id.taskUpdate);
-        editDate = findViewById(R.id.dateUpdate);
-
-        @SuppressLint("WrongViewCast") Button btn = (Button) findViewById(R.id.btnBack);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        editDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePicker();
-            }
-        });
+        setContentView(R.layout.activity_update);
 
         db = Room.databaseBuilder(getApplicationContext(),
                 TaskDatabase.class, "database-name").build();
 
+        edtTitle = findViewById(R.id.taskUpdate);
+        edtDate = findViewById(R.id.dateUpdate);
         btnUpdate = findViewById(R.id.btn_Update);
+        btncancel = findViewById(R.id.btnBack);
 
         int id = getIntent().getIntExtra("id", 0);
-        taskId = id;
-        String title = getIntent().getStringExtra("task");
-        String date = getIntent().getStringExtra("date");
+        id_item = id;
+        String title = getIntent().getStringExtra("title");
+        String content = getIntent().getStringExtra("content");
 
-        editTitle.setText(title);
-        editDate.setText(date);
+        edtTitle.setText(title);
+        edtDate.setText(content);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,22 +52,25 @@ public class UpdateActivity extends AppCompatActivity {
                 updateTodoToDatabase();
             }
         });
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @SuppressLint("StaticFieldLeak")
     private void updateTodoToDatabase() {
-        final String taskTitle = editTitle.getText().toString();
-        final String taskDate = editDate.getText().toString();
-
+        final String title = edtTitle.getText().toString();
+        final String content = edtDate.getText().toString();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                Task newTask = new Task();
-                newTask.setTitle(taskTitle);
-                newTask.setDate(taskDate);
-                newTask.setId(taskId);
-                db.taskDao().updateOne(newTask);
+                Task diaryUpdated = new Task( title, content);
+                diaryUpdated.setId(id_item);
+                db.taskDao().updateOne(diaryUpdated);
                 return null;
             }
 
@@ -97,24 +85,13 @@ public class UpdateActivity extends AppCompatActivity {
     private void showSuccessDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Message")
-                .setMessage("Update Success")
-                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+                .setMessage("Successfully")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
                     }
                 })
                 .show();
-    }
-
-    private void showDatePicker(){
-        DatePickerDialog date = new DatePickerDialog(this , new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                @SuppressLint("WrongViewCast") EditText editDate = findViewById(R.id.dateUpdate);
-                editDate.setText(i+" "+(i1+1)+" "+i2);
-            }
-        }, 2019, 01, 01);
-        date.show();
     }
 }
